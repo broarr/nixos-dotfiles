@@ -12,6 +12,8 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.consoleMode = "1";
+  boot.loader.systemd-boot.configurationLimit = 20;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "spoon"; # Define your hostname.
@@ -33,10 +35,28 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+  ];
+
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.displayManager.lightdm.enable = true;
-  # services.xserver.windowManager.niri.enable = true;
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "nvidia" "modesetting" ];
+    libinput.enable = true;
+    displayManager.lightdm.enable = true;
+  };
+  services.hardware.bolt.enable = true;
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    open = false;
+    prime = {
+      offload.enable = true;
+      intelBusId = "PCI:0@0:2:0";
+      nvidiaBusId = "PCI:0@0:6:0";
+    };
+  };
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
@@ -48,9 +68,21 @@
   # Enable sound.
   # services.pulseaudio.enable = true;
   # OR
+  security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
     pulse.enable = true;
+  };
+
+  services.pipewire.extraConfig.pipewire."92-low-latency" = {
+    "context.properties" = {
+      "default.clock.rate" = 48000;
+      "default.clock.quantum" = 64;
+      "default.clock.min-quantum" = 32;
+      "default.clock.max-quantum" = 128;
+    };
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -69,10 +101,14 @@
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     alacritty
+    brightnessctl
     fuzzel
     git
     helix
+    mesa-demos
+    pciutils
     vim
+    vulkan-tools
     wget
     xwayland-satellite
   ];

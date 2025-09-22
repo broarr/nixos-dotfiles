@@ -11,7 +11,10 @@
     neofetch
     nil
     nixpkgs-fmt
+    obsidian
+    osu-lazer-bin
     ripgrep
+    tree
   ];
 
   programs.git.enable = true;
@@ -30,6 +33,15 @@
         name = "bradford roarr";
         email = "bradford.barr@gmail.com";
       };
+    };
+  };
+
+  programs.waybar = {
+    enable = true;
+    systemd.enable = true;
+    settings.main = {
+      modules-left = [ "niri/workspaces" ];
+      modules-right = ["pulseaudio" "bluetooth" "network" "battery" "clock"];
     };
   };
 }
