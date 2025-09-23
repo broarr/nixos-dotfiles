@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   # Use luks for full disk encryption
@@ -26,22 +27,29 @@
   ];
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
+  boot.blacklistedKernelModules = [ "nouveau" "nvidiafb" ];
+  boot.kernelParams = [
+    "i915.enable_dri=3" # force DRI3
+    "i915.enable_psr=0" # disable panel self-refresh (may cause tearing if enabled)
+    "i915.enable_fbc=1" # enable framebuffer compression
+  ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/vg0/root";
+    {
+      device = "/dev/vg0/root";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/4B9D-65A6";
+    {
+      device = "/dev/disk/by-uuid/4B9D-65A6";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
   swapDevices =
-    [ { device = "/dev/vg0/swap"; }
-    ];
+    [{ device = "/dev/vg0/swap"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

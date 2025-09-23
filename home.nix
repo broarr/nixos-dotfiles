@@ -24,7 +24,7 @@
     shellAliases = {
       nrs = "sudo nixos-rebuild --upgrade --flake ~/.dotfiles#spoon switch";
     };
-  };   
+  };
 
   programs.jujutsu = {
     enable = true;
@@ -41,7 +41,7 @@
     systemd.enable = true;
     settings.main = {
       modules-left = [ "niri/workspaces" ];
-      modules-right = ["pulseaudio" "bluetooth" "network" "battery" "clock"];
+      modules-right = [ "pulseaudio" "bluetooth" "network" "battery" "clock" ];
     };
   };
 }

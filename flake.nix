@@ -10,31 +10,31 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }:
-  let
-    system = "x86_64-linux";
-  in
-  {
-    nixosConfigurations = {
-      spoon = nixpkgs.lib.nixosSystem {
-        system = system;
+    let
+      system = "x86_64-linux";
+    in
+    {
+      nixosConfigurations = {
+        spoon = nixpkgs.lib.nixosSystem {
+          system = system;
 
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.broarr = import ./home.nix;
-              backupFileExtension = "backup";
-            };
-          }
-        ];
+          modules = [
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.broarr = import ./home.nix;
+                backupFileExtension = "backup";
+              };
+            }
+          ];
 
-        specialArgs = {
-          inherit system;
+          specialArgs = {
+            inherit system;
+          };
         };
       };
     };
-  };
 }
