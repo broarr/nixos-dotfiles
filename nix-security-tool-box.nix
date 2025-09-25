@@ -7,7 +7,6 @@
     abootimg
     above
     acltoolkit
-    acquire
     adenum
     adidnsdump
     adreaper
@@ -15,19 +14,19 @@
     aflplusplus
     aiodnsbrute
     aircrack-ng
-    airgeddon
-    albedo
-    ali
-    amass
-    amoco
-    androguard
-    apkeep
-    apktool
-    ares-rs
-    arjun
-    arp-scan
-    arp-scan-rs
-    arping
+  # airgeddon
+  # albedo
+  # ali
+  # amass
+  # amoco
+  # androguard
+  # apkeep
+  # apktool
+  # ares-rs
+  # arjun
+  # arp-scan
+  # arp-scan-rs
+  # arping
     arpoison
     atftp
     authoscope
@@ -38,6 +37,7 @@
     bandwhich
     bettercap
     bind
+    binwalk
     bingrep
     bloodhound-py
     bluewalker
@@ -55,7 +55,6 @@
     bully
     burpsuite
     cabextract
-    cameradar
     cansina
     cantoolz
     cardpeek
@@ -69,7 +68,6 @@
     certinfo-go
     certipy
     certsync
-    cf-hero
     cfripper
     chain-bench
     chainsaw
@@ -246,7 +244,6 @@
     iotop
     ipcalc
     iperf2
-    iproute
     iproute2
     ipscan
     iputils
@@ -317,7 +314,6 @@
     mubeng
     mx-takeover
     naabu
-    nano
     nasty
     nbtscan
     nbtscanner
@@ -341,7 +337,7 @@
     nomore403
     noseyparker
     nosqli
-    nrfutil
+    # nrfutil
     ntfs3g
     ntfsprogs
     nth
@@ -374,13 +370,11 @@
     photon
     phrasendrescher
     picocom
-    pingu
     pip-audit
     pixiewps
     pktgen
     plecost
     popeye
-    poutine
     pre2k
     prowler
     proxify
@@ -388,13 +382,10 @@
     putty
     pwgen
     pwnat
-    pwndbg
     pwntools
     pysqlrecon
-    python310Packages.safety
     python3Packages.angr
     python3Packages.angrop
-    python3Packages.binwalk
     python3Packages.bleak
     python3Packages.can
     python3Packages.emv
@@ -402,7 +393,6 @@
     python3Packages.karton-core
     python3Packages.lsassy
     python3Packages.malduck
-    python3Packages.patator
     python3Packages.pyi2cflash
     python3Packages.pypykatz
     python3Packages.pyspiflash
@@ -412,7 +402,6 @@
     python3Packages.unicorn
     radamsa
     radare2
-    radare2-cutter
     rdwatool
     reaverwps
     recoverjpeg
@@ -503,8 +492,6 @@
     theharvester
     tlsinfo
     tlsx
-    tmux
-    tracee
     traitor
     trivy
     troubadix
@@ -521,7 +508,6 @@
     udpx
     uncover
     unicorn
-    unicorn-emu
     unrar
     unzip
     urlfinder
@@ -569,7 +555,6 @@
     yatas
     yersinia
     zap
-    zeek
     zellij
     zigpy-cli
     zkar
