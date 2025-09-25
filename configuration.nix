@@ -4,6 +4,7 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./nix-security-tool-box.nix
     ];
 
   boot.kernelPackages = pkgs.linuxPackages_6_16;
@@ -35,7 +36,7 @@
 
   services = {
     displayManager.defaultSession = "niri";
-    xserver =  {
+    xserver = {
       enable = true;
       videoDrivers = [ "nvidia" "intel" ];
       displayManager.gdm = {
