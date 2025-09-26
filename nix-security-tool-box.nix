@@ -333,7 +333,7 @@
     nload
     nmap
     nmap-formatter
-    nodePackages.hyperpotamus
+    # nodePackages.hyperpotamus
     nomore403
     noseyparker
     nosqli
@@ -387,7 +387,7 @@
     python3Packages.angr
     python3Packages.angrop
     python3Packages.bleak
-    python3Packages.can
+    # python3Packages.can
     python3Packages.emv
     python3Packages.hakuin
     python3Packages.karton-core

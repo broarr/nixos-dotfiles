@@ -11,7 +11,6 @@
   boot.loader = {
     systemd-boot = {
       enable = true;
-      consoleMode = "1";
       configurationLimit = 20;
     };
     efi.canTouchEfiVariables = true;
@@ -26,7 +25,10 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   console = {
-    font = "Lat2-Terminus16";
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-i32b.psf.gz";
+    packages = with pkgs; [
+      terminus_font
+    ];
     useXkbConfig = true;
   };
 
@@ -64,7 +66,7 @@
       open = false;
       prime = {
         # sync.enable = true;
-        reverseSync.enable = true;
+        # reverseSync.enable = true;
         # offload.enable = true;
         # offload.enableOffloadCmd = true;
         intelBusId = "PCI:0:2:0";
@@ -76,6 +78,7 @@
   environment.variables = {
     GBM_BACKEND = "nvidia-drm";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    LIBVA_DRIVER_NAME="nvidia";
     # __NV_PRIME_RENDER_OFFLOAD = "1";
     # __VK_LAYER_NV_optimus = "NVIDIA_only";
     # WLR_DRM_NO_ATOMIC = "1";
@@ -122,12 +125,17 @@
     fuzzel
     git
     helix
+    inxi
+    libdrm
     lshw
     mesa-demos
+    nvtopPackages.nvidia
     pciutils
+    psmisc
     vim
     vulkan-tools
     wget
+    wayland-utils
     wlr-randr
     xwayland-satellite
   ];

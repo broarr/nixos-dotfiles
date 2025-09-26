@@ -28,9 +28,10 @@
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelParams = [
-    "i915.enable_dri=3" # force DRI3
     "i915.enable_psr=0" # disable panel self-refresh (may cause tearing if enabled)
     "i915.enable_fbc=1" # enable framebuffer compression
+    "nvidia-drm.modeset=1"
+    "pcie_aspm=off"
   ];
   boot.extraModulePackages = [ ];
 
