@@ -25,6 +25,7 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   console = {
+    earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-i32b.psf.gz";
     packages = with pkgs; [
       terminus_font
@@ -35,24 +36,90 @@
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
-
   services = {
+    hardware.bolt.enable = true;
     displayManager.defaultSession = "niri";
+    greetd = {
+      enable = true;
+      package = pkgs.greetd.wlgreet;
+      settings = {
+        default_session.command = "${pkgs.greetd.wlgreet}/bin/wlgreet --command niri";
+      };
+    };
     xserver = {
       enable = true;
-      videoDrivers = [ "nvidia" "intel" ];
-      displayManager.gdm = {
-        enable = true;
-        wayland = true;
-      };
+      # videoDrivers = [ "nvidia" "modesetting" ];
       xkb = {
         layout = "us";
         options = "ctrl:swapcaps";
       };
+      xrandrHeads = [
+        {
+          output = "eDP-1";
+          primary = true;
+          monitorConfig = ''
+            Option "PreferredMode" "3200x1800"
+            Option "DPI" "220 x 220"
+          '';
+        }
+        {
+          output = "HDMI-A-1";
+          monitorConfig = ''
+            Option "PreferredMode" "1920x1080"
+            Option "DPI" "96 x 96"
+          '';
+        }
+      ];
+      config = ''
+        Section "ServerLayout"
+          Identifier "layout"
+          Screen 0 "intel"
+          Screen 1 "nvidia" RightOf "intel"
+        EndSection
+
+        Section "Device"
+          Identifier "intel"
+          Driver "modesetting"
+          BusID "PCI:0:2:0"
+          Option "TearFree" "true"
+        EndSection
+
+        Section "Screen"
+          Identifier "intel"
+          Device "intel"
+        EndSection
+
+        Section "Device"
+          Identifier "nvidia"
+          Driver "nvidia"
+          BusID "PCI:0:6:0"
+          Option "AllowEmptyInitialConfiguration"
+          Option "Coolbits" "28"
+          Option "AllowExternalGpus" "true"
+        EndSection
+
+        Section "Screen"
+          Identifier "nvidia"
+          Device "nvidia"
+        EndSection
+      '';
     };
   };
 
-  services.hardware.bolt.enable = true;
+  systemd.user.services.xplugd = {
+    description = "Handle monitor hotplug with xplugd";
+    wantedBy = [ "default.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.xplugd}/bin/xplugd -r ${pkgs.writeShellScript "xplugd-handler" ''
+        case "$ACTION" in
+          connect|change|disconnect)
+            xrandr --auto
+            ;;
+        esac
+      ''}";
+    };
+  };
+
   hardware = {
     graphics = {
       enable = true;
@@ -67,8 +134,8 @@
       prime = {
         # sync.enable = true;
         # reverseSync.enable = true;
-        # offload.enable = true;
-        # offload.enableOffloadCmd = true;
+        offload.enable = true;
+        offload.enableOffloadCmd = true;
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:0:6:0";
       };
@@ -135,9 +202,10 @@
     vim
     vulkan-tools
     wget
-    wayland-utils
     wlr-randr
-    xwayland-satellite
+    xwayland
+    xorg.xrandr
+    xplugd
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
