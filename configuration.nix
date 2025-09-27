@@ -7,7 +7,7 @@
       ./nix-security-tool-box.nix
     ];
 
-  boot.kernelPackages = pkgs.linuxPackages_6_16;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader = {
     systemd-boot = {
       enable = true;
@@ -41,7 +41,7 @@
     displayManager.ly.enable = true;
     xserver = {
       enable = true;
-      # videoDrivers = [ "nvidia" "modesetting" ];
+      videoDrivers = [ "modesetting" "nvidia" ];
       xkb = {
         layout = "us";
         options = "ctrl:swapcaps";
@@ -55,6 +55,7 @@
       enable32Bit = true;
     };
     nvidia = {
+      forceFullCompositionPipeline = true;
       modesetting.enable = true;
       powerManagement.enable = true;
       powerManagement.finegrained = false;
@@ -67,6 +68,13 @@
         offload.enableOffloadCmd = true;
         intelBusId = "PCI:0:2:0";
         nvidiaBusId = "PCI:0:6:0";
+      };
+      package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+        version = "580.82.09";
+        sha256_64bit = "sha256-Puz4MtouFeDgmsNMKdLHoDgDGC+QRXh6NVysvltWlbc=";
+        sha256_aarch64 = "sha256-lbYSa97aZ+k0CISoSxOMLyyMX//Zg2Raym6BC4COipU=";
+        settingsSha256 = "sha256-um53cr2Xo90VhZM1bM2CH4q9b/1W2YOqUcvXPV6uw2s=";
+        persistencedSha256 = "sha256-lbYSa97aZ+k0CISoSxOMLyyMX//Zg2Raym6BC4COipU=";
       };
     };
   };
