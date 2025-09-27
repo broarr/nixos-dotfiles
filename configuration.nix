@@ -38,14 +38,7 @@
   ];
   services = {
     hardware.bolt.enable = true;
-    displayManager.defaultSession = "niri";
-    greetd = {
-      enable = true;
-      package = pkgs.greetd.wlgreet;
-      settings = {
-        default_session.command = "${pkgs.greetd.wlgreet}/bin/wlgreet --command niri";
-      };
-    };
+    displayManager.ly.enable = true;
     xserver = {
       enable = true;
       # videoDrivers = [ "nvidia" "modesetting" ];
@@ -53,70 +46,6 @@
         layout = "us";
         options = "ctrl:swapcaps";
       };
-      xrandrHeads = [
-        {
-          output = "eDP-1";
-          primary = true;
-          monitorConfig = ''
-            Option "PreferredMode" "3200x1800"
-            Option "DPI" "220 x 220"
-          '';
-        }
-        {
-          output = "HDMI-A-1";
-          monitorConfig = ''
-            Option "PreferredMode" "1920x1080"
-            Option "DPI" "96 x 96"
-          '';
-        }
-      ];
-      config = ''
-        Section "ServerLayout"
-          Identifier "layout"
-          Screen 0 "intel"
-          Screen 1 "nvidia" RightOf "intel"
-        EndSection
-
-        Section "Device"
-          Identifier "intel"
-          Driver "modesetting"
-          BusID "PCI:0:2:0"
-          Option "TearFree" "true"
-        EndSection
-
-        Section "Screen"
-          Identifier "intel"
-          Device "intel"
-        EndSection
-
-        Section "Device"
-          Identifier "nvidia"
-          Driver "nvidia"
-          BusID "PCI:0:6:0"
-          Option "AllowEmptyInitialConfiguration"
-          Option "Coolbits" "28"
-          Option "AllowExternalGpus" "true"
-        EndSection
-
-        Section "Screen"
-          Identifier "nvidia"
-          Device "nvidia"
-        EndSection
-      '';
-    };
-  };
-
-  systemd.user.services.xplugd = {
-    description = "Handle monitor hotplug with xplugd";
-    wantedBy = [ "default.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.xplugd}/bin/xplugd -r ${pkgs.writeShellScript "xplugd-handler" ''
-        case "$ACTION" in
-          connect|change|disconnect)
-            xrandr --auto
-            ;;
-        esac
-      ''}";
     };
   };
 
@@ -150,7 +79,6 @@
     # __VK_LAYER_NV_optimus = "NVIDIA_only";
     # WLR_DRM_NO_ATOMIC = "1";
   };
-
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
